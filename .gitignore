@@ -1,0 +1,5 @@
+.idea
+/bitrix
+/upload
+/local/vendor/
+/local/composer.phar

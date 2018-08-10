@@ -1,0 +1,14 @@
+{
+  "name": "one/local",
+  "description": "",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "LeonidPM",
+      "email": "leurika@yandex.ru"
+    }
+  ],
+  "require": {
+    "robmorgan/phinx": "^0.10.5"
+  }
+}

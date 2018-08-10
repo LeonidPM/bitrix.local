@@ -1,5 +1,4 @@
 <?php
-CModule::IncludeModule("iblock");
 
 /**
  * Class UsersListComponent
@@ -9,15 +8,20 @@ class UsersListComponent extends \CBitrixComponent
 {
     /**
      * Метод, исполняемый при вызове компонента
-     * global \CMain $APPLICATION;
      * @return mixed|void
      */
+
     public function executeComponent()
     {
         global $APPLICATION;
 
         $APPLICATION->RestartBuffer();
-        $this->arResult = $this->getUsersList('users');
+        try {
+            \Bitrix\Main\Loader::includeModule('iblock');
+            $this->arResult = $this->getUsersList("users");
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+        }
 
         $this->includeComponentTemplate();
     }
@@ -27,30 +31,32 @@ class UsersListComponent extends \CBitrixComponent
      *
      * @param string $sIBlockType
      *
+     * @throws \Exception
      * @return array
      */
-    protected function getUsersList(string $sIBlockType)
+    protected function getUsersList($sIBlockType)
     {
+        $arResult = [];
 
-        if (CModule::IncludeModule("iblock")) {
+        $arIBT = Bitrix\Iblock\TypeTable::getList(array('select' => array('*', 'ID')))->FetchAll();
 
-            $oRes     = CIBlockElement::GetList(
-                Array(),
-                Array(
-                    "!ID"         => "",
-                    'IBLOCK_TYPE' => $sIBlockType
-                )
-            );
-            $arResult = [];
-            $iIndex   = 0;
-            while ($arRes = $oRes->Fetch()) {
-                $arResult[$iIndex]["ID"]   = (int)$arRes["ID"];
-                $arResult[$iIndex]["NAME"] = mb_convert_encoding($arRes["NAME"], "UTF-8", "Windows-1251");
-                $iIndex++;
-            };
+        foreach ($arIBT as $arV) {
+            foreach ($arV as $v) {
+                if ($v == $sIBlockType) {
+                    $oRes = \Bitrix\Iblock\ElementTable::getList(array(
+                        "select" => array('ID', 'NAME')
+                    ));
+                    $iIndex = 0;
+                    while ($arRes = $oRes->fetch()) {
+                        $arResult[$iIndex]["ID"] = (int)$arRes["ID"];
+                        $arResult[$iIndex]["NAME"] = mb_convert_encoding($arRes["NAME"], "UTF-8", "Windows-1251");
+                        $iIndex++;
+                    };
+                }
+            }
 
-            return $arResult;
         }
 
+        return $arResult;
     }
 }
