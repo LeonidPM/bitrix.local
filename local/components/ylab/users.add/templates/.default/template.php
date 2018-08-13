@@ -40,8 +40,6 @@ $arLoadUserArray = array(
 $oEl = new CIBlockElement;
 if ($iUserID = $oEl->Add($arLoadUserArray)) {
     echo "Пользователь успешно добавлен <br/> ID нового пользователя: " . $iUserID . "<br/>";
-} else {
-    echo "Error: " . $oEl->LAST_ERROR;
 }
 ?>
 <div style="padding-left:30px;">

@@ -66,7 +66,7 @@ class UserAddComponent extends ComponentValidation
             'name' => 'required',
             'birth_date' => 'required|date_format:d.m.Y',
             'phone_number' => 'required|regex:/^\+7\d{10}$/',
-            'city' => 'required|min:1|max:5|numeric'
+            'city' => 'required'
         ];
     }
 }
