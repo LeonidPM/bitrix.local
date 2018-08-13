@@ -31,7 +31,7 @@ class UsersListComponent extends \CBitrixComponent
      *
      * @param string $sIBlockType
      *
-     * @throws \Exception
+     * @throws Exception
      * @return array
      */
     protected function getUsersList($sIBlockType)
@@ -49,7 +49,7 @@ class UsersListComponent extends \CBitrixComponent
                     $iIndex = 0;
                     while ($arRes = $oRes->fetch()) {
                         $arResult[$iIndex]["ID"] = (int)$arRes["ID"];
-                        $arResult[$iIndex]["NAME"] = mb_convert_encoding($arRes["NAME"], "UTF-8", "Windows-1251");
+                        $arResult[$iIndex]["NAME"] = $arRes["NAME"];
                         $iIndex++;
                     };
                 }
